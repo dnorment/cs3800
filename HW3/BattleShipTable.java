@@ -24,9 +24,9 @@ public class BattleShipTable implements Serializable
 	static final String SUBMARINE_SYMBOL = "S";
 	static final String HIT_SYMBOL = "X";
 	static final String MISS_SYMBOL = "O";
-	static final String DEFAULT_SYMBOL = "Z";
+	static final String DEFAULT_SYMBOL = " ";
 
-	String [][]table = null;
+	String[][] table = null;
 	/* Valid values in the table*/
 
 
@@ -39,7 +39,7 @@ public class BattleShipTable implements Serializable
 		//set default values
 		for(int i=0;i<10;++i){
 			for(int j=0;j<10;++j){
-				this.table[i][j] = "Z";
+				this.table[i][j] = DEFAULT_SYMBOL;
 			}
 		}
 	}
@@ -47,7 +47,7 @@ public class BattleShipTable implements Serializable
 	/*convert alpha_numeric to the X and Y coordinates*/
 	private int[] AlphaNumerictoXY(String alpha_coordinates) throws NumberFormatException{
 		//get the alpha part
-		int []ret = new int[2];
+		int[] ret = new int[2];
 		ret[0] = this.helperAlphaToX(alpha_coordinates.charAt(0));
 		//get the number part
 		ret[1] = Integer.parseInt(alpha_coordinates.substring(1));
@@ -133,7 +133,7 @@ public class BattleShipTable implements Serializable
 	}
 
 	private boolean insertSinglePoint(int[] xy, String s){
-		if(this.table[xy[0]][xy[1]] == "Z"){
+		if(this.table[xy[0]][xy[1]] == DEFAULT_SYMBOL){
 			this.table[xy[0]][xy[1]] = s;
 			return true;
 		}else
@@ -143,7 +143,7 @@ public class BattleShipTable implements Serializable
 	private boolean checkAlongXAxis(int[] xy, int len){
 		if(xy[1]+len > 9) return false;
 		for(int j=xy[1];j<xy[1]+len;++j){
-			if(this.table[xy[0]][j] != "Z")
+			if(this.table[xy[0]][j] != DEFAULT_SYMBOL)
 				return false;
 		}
 		return true;
@@ -158,7 +158,7 @@ public class BattleShipTable implements Serializable
 	private boolean checkAlongYAxis(int[] xy, int len){
 		if(xy[0]+len > 9) return false;
 		for(int i=xy[0];i<xy[0]+len;++i){
-			if(this.table[i][xy[1]] != "Z")
+			if(this.table[i][xy[1]] != DEFAULT_SYMBOL)
 				return false;
 		}
 		return true;
