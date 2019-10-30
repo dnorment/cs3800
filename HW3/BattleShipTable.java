@@ -2,6 +2,8 @@ import java.io.Serializable;
 
 public class BattleShipTable implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	/* Constants*/
 	//Size of each type of ship
 	static final int AIRCRAFT_CARRIER_SIZE = 5;
@@ -34,7 +36,6 @@ public class BattleShipTable implements Serializable
 	// constructor with port
 	public BattleShipTable()
 	{
-		System.out.println("create table");
 		this.table = new String[10][10];
 		//set default values
 		for(int i=0;i<10;++i){
@@ -170,6 +171,21 @@ public class BattleShipTable implements Serializable
 		}
 	}
 
+	public boolean isAlive()
+	{
+		for (int i=0; i<10; i++)
+		{
+			for (int j=0; j<10; j++)
+			{
+				String space = table[i][j];
+				if (space == "A" || space == "D" || space == "S")
+				{
+					return true;
+				} 
+			}
+		}
+		return false;
+	}
 	public static void main(String args[])
 	{
 		BattleShipTable t = new BattleShipTable();

@@ -2,6 +2,8 @@ import java.io.Serializable;
 
 public class Message implements Serializable
 {
+	private static final long serialVersionUID = 2L;
+	
 	//message types
 	static final int MSG_REQUEST_INIT = 1;//sent from server to client
 	static final int MSG_RESPONSE_INIT = 2; //sent from client to server

@@ -16,6 +16,7 @@ public class Server
             System.out.printf("Game #%d: Accepted Player 1 connection%n", gameNum);
             Socket playerTwo = server.accept();
             System.out.printf("Game #%d: Accepted Player 2 connection%n", gameNum);
+            
             //start game thread with 2 players
             GameThread game = new GameThread(gameNum, playerOne, playerTwo);
             Thread gameThread = new Thread(game);
