@@ -87,12 +87,17 @@ public class Client
                     System.out.println(table.toString());
 
                     //send board to server
-                    Message outMessage = new Message(2, FTable, null, null, playerNum);
-                    outToServer.writeObject(outMessage);
+                    msg = new Message(2, FTable, null, null, playerNum);
+                    outToServer.writeObject(msg);
                     outToServer.flush();
                     break;
                 case 3: //MSG_REQUEST_PLAY, get boards and send block to bomb
-
+                    System.out.printf("Player %d, fire a bomb (ex. 'G0'): ", playerNum);
+                    String input = kb.nextLine();
+                    int[] blockBomb = new int[2];
+                    blockBomb[0] = (int)input.charAt(0) - (int)'A';
+                    blockBomb[1] = Integer.parseInt(input.substring(1));
+                    msg = new Message(4, FTable, PTable, blockBomb, playerNum);
                     break;
                 case 5: //MSG_REQUEST_GAME_OVER, game is over
                     gameAlive = false;

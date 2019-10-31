@@ -156,7 +156,37 @@ public class BattleShipTable implements Serializable
 		for(int i=xy[0];i<xy[0]+len;++i){
 			this.table[i][xy[1]] = s;				
 		}		
-	}	
+	}
+
+	public boolean isAlive()
+	{
+		for (int i=0; i<10; i++)
+		{
+			for (int j=0; j<10; j++)
+			{
+				String symbol = table[i][j];
+				if (symbol == BattleShipTable.AIRCRAFT_CARRIER_SYMBOL || symbol == BattleShipTable.DESTROYER_SYMBOL || symbol == BattleShipTable.SUBMARINE_SYMBOL)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean bomb(int[] blockBomb)
+	{
+		String symbol = table[blockBomb[0]][blockBomb[1]];
+		if (symbol == BattleShipTable.AIRCRAFT_CARRIER_SYMBOL || symbol == BattleShipTable.DESTROYER_SYMBOL || symbol == BattleShipTable.SUBMARINE_SYMBOL)
+		{
+			table[blockBomb[0]][blockBomb[1]] = BattleShipTable.MISS_SYMBOL;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	
 	public static void main(String args[]) 
 	{ 
