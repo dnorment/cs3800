@@ -23,8 +23,6 @@ public class GameThread implements Runnable
         try
         {
             //setup streams and readers for client communication
-            BufferedReader inFromP1 = new BufferedReader(new InputStreamReader(this.p1.getInputStream()));
-            BufferedReader inFromP2 = new BufferedReader(new InputStreamReader(this.p2.getInputStream()));
             DataOutputStream outToP1 = new DataOutputStream(this.p1.getOutputStream());
             DataOutputStream outToP2 = new DataOutputStream(this.p2.getOutputStream());
             ObjectOutputStream objToP1 = new ObjectOutputStream(outToP1);

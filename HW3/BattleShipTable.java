@@ -54,10 +54,7 @@ public class BattleShipTable implements Serializable
 	private int helperAlphaToX(char alpha){
 		return (int)alpha - (int)'A';
 	}
-	
-	private String XYToAlphaNumeric(int []xy){
-		return "" + ((char)(xy[0] + (int)'A')) + "" + xy[1];
-	}
+
 	//print out the table
 	public String toString(){
 		String ret = new String();
