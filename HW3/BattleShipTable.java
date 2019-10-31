@@ -3,7 +3,6 @@ import java.io.Serializable;
 public class BattleShipTable implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-
 	/* Constants*/
 	//Size of each type of ship
 	static final int AIRCRAFT_CARRIER_SIZE = 5;
@@ -29,40 +28,36 @@ public class BattleShipTable implements Serializable
 	static final String DEFAULT_SYMBOL = " ";
 
 	String[][] table = null;
-	/* Valid values in the table*/
 
 
-
-	// constructor with port
-	public BattleShipTable()
-	{
+	// constructor 
+	public BattleShipTable() 
+	{ 
+		System.out.println("create table");
 		this.table = new String[10][10];
 		//set default values
 		for(int i=0;i<10;++i){
 			for(int j=0;j<10;++j){
-				this.table[i][j] = DEFAULT_SYMBOL;
-			}
-		}
-	}
-
+				this.table[i][j] = BattleShipTable.DEFAULT_SYMBOL;
+			}		
+		}		
+	} 
 	/*convert alpha_numeric to the X and Y coordinates*/
 	private int[] AlphaNumerictoXY(String alpha_coordinates) throws NumberFormatException{
 		//get the alpha part
-		int[] ret = new int[2];
+		int []ret = new int[2];
 		ret[0] = this.helperAlphaToX(alpha_coordinates.charAt(0));
-		//get the number part
+		//get the numeric part
 		ret[1] = Integer.parseInt(alpha_coordinates.substring(1));
 		return ret;
 	}
-
 	private int helperAlphaToX(char alpha){
 		return (int)alpha - (int)'A';
 	}
-
+	
 	private String XYToAlphaNumeric(int []xy){
 		return "" + ((char)(xy[0] + (int)'A')) + "" + xy[1];
 	}
-
 	//print out the table
 	public String toString(){
 		String ret = new String();
@@ -76,45 +71,40 @@ public class BattleShipTable implements Serializable
 		}
 		return ret;
 	}
-
+	
 	public void insertHit(String x1, String s){
 		this.insertSinglePoint(this.AlphaNumerictoXY(x1), s);
 	}
-
 	public boolean insertSubmarine(String x1){
 		//check if it can be inserted
-		if(this.insertSinglePoint(this.AlphaNumerictoXY(x1), "S"))
+		if(this.insertSinglePoint(this.AlphaNumerictoXY(x1), BattleShipTable.SUBMARINE_SYMBOL))
 			return true;
 		else
 			return false;
-	}
-
+	}	
+	
 	public boolean insertAirCarrier(String x1, String x2){
 		//check if it can be inserted
-		//5 squares
-		if(this.insertShip(x1, x2, BattleShipTable.AIRCRAFT_CARRIER_SIZE, "A"))
+		if(this.insertShip(x1, x2, BattleShipTable.AIRCRAFT_CARRIER_SIZE, BattleShipTable.AIRCRAFT_CARRIER_SYMBOL))
 			return true;
 		else
 			return false;
 	}
-
+	
 	public boolean insertDestroyer(String x1, String x2){
-		//check if it can be inserted
-		if(this.insertShip(x1, x2, BattleShipTable.DESTROYER_SIZE, "D"))
+		//check if it can be inserted	
+		if(this.insertShip(x1, x2, BattleShipTable.DESTROYER_SIZE, BattleShipTable.DESTROYER_SYMBOL))
 			return true;
 		else
 			return false;
 	}
 
 	private boolean insertShip(String x1, String x2, int len, String s){
-		//check if it can be inserted
-		//4 squares
-		//check if the two coordinates are valid
 		int []xy1 = this.AlphaNumerictoXY(x1);
 		int []xy2 = this.AlphaNumerictoXY(x2);
 		if(!(xy1[0]>=0 && xy1[0]<=9 && xy1[1]>=0 && xy1[1]<=9)) return false;
 		if(!(xy2[0]>=0 && xy2[0]<=9 && xy2[1]>=0 && xy2[1]<=9)) return false;
-
+		
 		if(xy1[0] == xy2[0] && (xy1[1]+1) == xy2[1]){// along the x axis
 			if(checkAlongXAxis(this.AlphaNumerictoXY(x1),len)){//insert the battleship
 				this.insertAlongXAxis(this.AlphaNumerictoXY(x1), len, s);
@@ -132,63 +122,58 @@ public class BattleShipTable implements Serializable
 		}else
 			return false;
 	}
-
+	
 	private boolean insertSinglePoint(int[] xy, String s){
-		if(this.table[xy[0]][xy[1]] == DEFAULT_SYMBOL){
+		if(this.table[xy[0]][xy[1]].equals(BattleShipTable.DEFAULT_SYMBOL)){
 			this.table[xy[0]][xy[1]] = s;
 			return true;
 		}else
 			return false;
 	}
-
+	
 	private boolean checkAlongXAxis(int[] xy, int len){
-		if(xy[1]+len > 9) return false;
+		if(xy[1]+len > 10) return false;
 		for(int j=xy[1];j<xy[1]+len;++j){
-			if(this.table[xy[0]][j] != DEFAULT_SYMBOL)
+			if(!this.table[xy[0]][j].equals(BattleShipTable.DEFAULT_SYMBOL))
 				return false;
 		}
 		return true;
 	}
-
+	
 	private void insertAlongXAxis(int[] xy, int len, String s){
 		for(int j=xy[1];j<xy[1]+len;++j){
 			this.table[xy[0]][j] = s;
 		}
 	}
-
+	
 	private boolean checkAlongYAxis(int[] xy, int len){
-		if(xy[0]+len > 9) return false;
+		if(xy[0]+len > 10) return false;
 		for(int i=xy[0];i<xy[0]+len;++i){
-			if(this.table[i][xy[1]] != DEFAULT_SYMBOL)
+			if(!this.table[i][xy[1]].equals(BattleShipTable.DEFAULT_SYMBOL))
 				return false;
 		}
 		return true;
 	}
-
+	
 	private void insertAlongYAxis(int[] xy, int len, String s){
 		for(int i=xy[0];i<xy[0]+len;++i){
-			this.table[i][xy[1]] = s;
-		}
-	}
-
-	public boolean isAlive()
-	{
-		for (int i=0; i<10; i++)
-		{
-			for (int j=0; j<10; j++)
-			{
-				String space = table[i][j];
-				if (space == "A" || space == "D" || space == "S")
-				{
-					return true;
-				} 
-			}
-		}
-		return false;
-	}
-	public static void main(String args[])
-	{
-		BattleShipTable t = new BattleShipTable();
+			this.table[i][xy[1]] = s;				
+		}		
+	}	
+	
+	public static void main(String args[]) 
+	{ 
+		BattleShipTable t = new BattleShipTable();		
+		t.insertAirCarrier("C5","C6");
 		System.out.println(t.toString());
-	}
-}
+		if(!t.insertDestroyer("H9", "I9")){
+			System.out.println("not able to insert");
+		}
+		System.out.println(t.toString());
+		if(!t.insertDestroyer("H9", "I9")){
+			System.out.println("not able to insert");
+		}
+		System.out.println(t.toString());
+		
+	} 
+} 
