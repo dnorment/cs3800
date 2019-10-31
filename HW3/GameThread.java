@@ -58,10 +58,15 @@ public class GameThread implements Runnable
                 msg = new Message(3, P1FBoard, P1PBoard, null, 1); //MSG_REQUEST_PLAY
                 objToP1.writeObject(msg);
                 objToP1.flush();
+                //parse play from P1
                 msg = (Message)objFromP1.readObject();
                 int[] bomb = msg.getBomb();
                 boolean hit = P2FBoard.bomb(bomb);
                 P1PBoard.table[bomb[0]][bomb[1]] = hit ? BattleShipTable.HIT_SYMBOL : BattleShipTable.MISS_SYMBOL;
+                //return to player if bomb hit, if ship sunk
+                msg = new Message(hit ? 8 : 9, null, null, null, 1);
+                objToP1.writeObject(msg);
+                objToP1.flush();
                 //if player 2 not dead from player 1's play
                 if (P2FBoard.isAlive())
                 {
@@ -69,7 +74,38 @@ public class GameThread implements Runnable
                     msg = new Message(3, P2FBoard, P2PBoard, null, 2); //MSG_REQUEST_PLAY
                     objToP2.writeObject(msg);
                     objToP2.flush();
+                    //parse play from P2
+                    msg = (Message)objFromP2.readObject();
+                    bomb = msg.getBomb();
+                    hit = P1FBoard.bomb(bomb);
+                    P2PBoard.table[bomb[0]][bomb[1]] = hit ? BattleShipTable.HIT_SYMBOL : BattleShipTable.MISS_SYMBOL;
+                    //return to play if bomb him, if ship sunk
+                    msg = new Message(hit ? 8 : 9, null, null, null, 2);
+                    objToP2.writeObject(msg);
+                    objToP2.flush();
+                }
+            }
 
+            //send game over/game win to correct players
+            if (P1FBoard.isAlive())
+            {
+                //P1 wins, P2 loses
+                msg = new Message(6, null, null, null, 1); //P1 wins
+                objToP1.writeObject(msg);
+                objToP1.flush();
+                msg = new Message(5, null, null, null, 2); //P2 loses
+                objToP2.writeObject(msg);
+                objToP2.flush();
+            }
+            else
+            {
+                //P1 loses, P2 wins
+                msg = new Message(5, null, null, null, 1); //P1 loses
+                objToP1.writeObject(msg);
+                objToP1.flush();
+                msg = new Message(6, null, null, null, 2); //P2 wins
+                objToP2.writeObject(msg);
+                objToP2.flush();
                 }
             }
         }

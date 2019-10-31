@@ -10,10 +10,13 @@ public class Message implements Serializable
 	static final int MSG_REQUEST_PLAY = 3; //sent from server to client
 	static final int MSG_RESPONSE_PLAY = 4; //sent from client to server
 	static final int MSG_REQUEST_GAME_OVER = 5; //sent from server to client
+	static final int MSG_REQUEST_GAME_WIN = 6; //sent from server to client
+	static final int MSG_REQUEST_BOMB_MISS = 7; //sent from server to client
+	static final int MSG_REQUEST_BOMB_HIT = 8; //sent from server to client
 
-	private int msgType=-1;
+	private int msgType;
 	private int player;
-	private int[] blockBomb = new int[2]; //x, y coordinates of the block on the opponent's board to be bombed; this is for the MSG_RESPONSE_PLAY message
+	private int[] blockBomb; //x, y coordinates of the block on the opponent's board to be bombed; this is for the MSG_RESPONSE_PLAY message
 
 
 	public BattleShipTable Ftable = null; //the player's own board (F-board)
