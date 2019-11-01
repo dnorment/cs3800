@@ -59,12 +59,12 @@ public class Client
         boolean gameAlive = true;
 
         //while not dead, keep game connection alive
+        ObjectInputStream inFromServer = new ObjectInputStream(clientSocket.getInputStream());
+        ObjectOutputStream outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
         while(gameAlive)
         {
             //read message from server
             Message msg = null;
-            ObjectInputStream inFromServer = new ObjectInputStream(clientSocket.getInputStream());
-            ObjectOutputStream outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
             try
             {
                 msg = (Message)inFromServer.readObject();
@@ -98,6 +98,8 @@ public class Client
                     blockBomb[0] = (int)input.charAt(0) - (int)'A';
                     blockBomb[1] = Integer.parseInt(input.substring(1));
                     msg = new Message(4, FTable, PTable, blockBomb, playerNum);
+                    outToServer.writeObject(msg);
+                    outToServer.flush();
                     break;
                 case 5: //MSG_REQUEST_GAME_OVER, game is over
                     gameAlive = false;

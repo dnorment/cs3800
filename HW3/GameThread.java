@@ -74,7 +74,7 @@ public class GameThread implements Runnable
                 P1PBoard.table[bomb[0]][bomb[1]] = hit ? BattleShipTable.HIT_SYMBOL : BattleShipTable.MISS_SYMBOL;
                 //return to player if bomb hit, if ship sunk
                 System.out.printf("Game #%d: Delivering hit success to Player 1%n", gameNum);
-                msg = new Message(hit ? 8 : 9, null, null, null, 1);
+                msg = new Message(hit ? 8 : 7, null, null, null, 1);
                 objToP1.writeObject(msg);
                 objToP1.flush();
                 //if player 2 not dead from player 1's play
@@ -134,12 +134,6 @@ public class GameThread implements Runnable
 
             //close GameThread and streams/Sockets
             System.out.printf("Game #%d: Closing game thread%n", gameNum);
-            outToP1.close();
-            outToP2.close();
-            objToP1.close();
-            objToP2.close();
-            objFromP1.close();
-            objFromP2.close();
             p1.close();
             p2.close();
         }
@@ -147,7 +141,5 @@ public class GameThread implements Runnable
         {
             System.out.println(e.getMessage());
         }
-
-        System.out.printf("Game #%d: Closing game thread", gameNum);
     }
 }
