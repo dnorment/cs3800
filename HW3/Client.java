@@ -103,6 +103,16 @@ public class Client
                     gameAlive = false;
                     System.out.println("Game over!");
                     break;
+                case 6: //MSG_REQUEST_GAME_WIN, game is over
+                    gameAlive = false;
+                    System.out.println("Game won!");
+                    break;
+                case 7: //MSG_REQUEST_BOMB_MISS
+                    System.out.println("Bomb miss");
+                    break;
+                case 8: //MSG_REQUEST_BOMB_HIT
+                    System.out.println("Bomb hit");
+                    break;
                 default:
                     System.out.println("Message error");
                     break;

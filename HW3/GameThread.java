@@ -59,7 +59,14 @@ public class GameThread implements Runnable
                 objToP1.writeObject(msg);
                 objToP1.flush();
                 //parse play from P1
-                msg = (Message)objFromP1.readObject();
+                try
+                {
+                    msg = (Message)objFromP1.readObject();
+                }
+                catch (ClassNotFoundException e)
+                {
+                    System.out.println(e.getMessage());
+                }
                 int[] bomb = msg.getBomb();
                 boolean hit = P2FBoard.bomb(bomb);
                 P1PBoard.table[bomb[0]][bomb[1]] = hit ? BattleShipTable.HIT_SYMBOL : BattleShipTable.MISS_SYMBOL;
@@ -75,7 +82,14 @@ public class GameThread implements Runnable
                     objToP2.writeObject(msg);
                     objToP2.flush();
                     //parse play from P2
-                    msg = (Message)objFromP2.readObject();
+                    try
+                    {
+                        msg = (Message)objFromP2.readObject();
+                    }
+                    catch (ClassNotFoundException e)
+                    {
+                        System.out.println(e.getMessage());
+                    }
                     bomb = msg.getBomb();
                     hit = P1FBoard.bomb(bomb);
                     P2PBoard.table[bomb[0]][bomb[1]] = hit ? BattleShipTable.HIT_SYMBOL : BattleShipTable.MISS_SYMBOL;
@@ -107,7 +121,16 @@ public class GameThread implements Runnable
                 objToP2.writeObject(msg);
                 objToP2.flush();
                 }
-            }
+
+            //close GameThread and streams/Sockets
+            outToP1.close();
+            outToP2.close();
+            objToP1.close();
+            objToP2.close();
+            objFromP1.close();
+            objFromP2.close();
+            p1.close();
+            p2.close();
         }
         catch (IOException e)
         {

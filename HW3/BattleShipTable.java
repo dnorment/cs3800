@@ -32,8 +32,7 @@ public class BattleShipTable implements Serializable
 
 	// constructor 
 	public BattleShipTable() 
-	{ 
-		System.out.println("create table");
+	{
 		this.table = new String[10][10];
 		//set default values
 		for(int i=0;i<10;++i){
