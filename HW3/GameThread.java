@@ -55,6 +55,7 @@ public class GameThread implements Runnable
             while (P1FBoard.isAlive() && P2FBoard.isAlive())
             {
                 //request play from P1
+                System.out.printf("Game #%d: Requesting play from Player 1%n", gameNum);
                 msg = new Message(3, P1FBoard, P1PBoard, null, 1); //MSG_REQUEST_PLAY
                 objToP1.writeObject(msg);
                 objToP1.flush();
@@ -62,6 +63,7 @@ public class GameThread implements Runnable
                 try
                 {
                     msg = (Message)objFromP1.readObject();
+                    System.out.printf("Game #%d: Received play from Player 1%n", gameNum);
                 }
                 catch (ClassNotFoundException e)
                 {
@@ -71,6 +73,7 @@ public class GameThread implements Runnable
                 boolean hit = P2FBoard.bomb(bomb);
                 P1PBoard.table[bomb[0]][bomb[1]] = hit ? BattleShipTable.HIT_SYMBOL : BattleShipTable.MISS_SYMBOL;
                 //return to player if bomb hit, if ship sunk
+                System.out.printf("Game #%d: Delivering hit success to Player 1%n", gameNum);
                 msg = new Message(hit ? 8 : 9, null, null, null, 1);
                 objToP1.writeObject(msg);
                 objToP1.flush();
@@ -78,6 +81,7 @@ public class GameThread implements Runnable
                 if (P2FBoard.isAlive())
                 {
                     //request play from P2
+                    System.out.printf("Game #%d: Requesting play from Player 2%n", gameNum);
                     msg = new Message(3, P2FBoard, P2PBoard, null, 2); //MSG_REQUEST_PLAY
                     objToP2.writeObject(msg);
                     objToP2.flush();
@@ -85,6 +89,7 @@ public class GameThread implements Runnable
                     try
                     {
                         msg = (Message)objFromP2.readObject();
+                        System.out.printf("Game #%d: Received play from Player 2%n", gameNum);
                     }
                     catch (ClassNotFoundException e)
                     {
@@ -94,6 +99,7 @@ public class GameThread implements Runnable
                     hit = P1FBoard.bomb(bomb);
                     P2PBoard.table[bomb[0]][bomb[1]] = hit ? BattleShipTable.HIT_SYMBOL : BattleShipTable.MISS_SYMBOL;
                     //return to play if bomb him, if ship sunk
+                    System.out.printf("Game #%d: Delivering hit success to Player 2%n", gameNum);
                     msg = new Message(hit ? 8 : 9, null, null, null, 2);
                     objToP2.writeObject(msg);
                     objToP2.flush();
@@ -104,9 +110,11 @@ public class GameThread implements Runnable
             if (P1FBoard.isAlive())
             {
                 //P1 wins, P2 loses
+                System.out.printf("Game #%d: Delivering win message to Player 1%n", gameNum);
                 msg = new Message(6, null, null, null, 1); //P1 wins
                 objToP1.writeObject(msg);
                 objToP1.flush();
+                System.out.printf("Game #%d: Delivering loss message to Player 2%n", gameNum);
                 msg = new Message(5, null, null, null, 2); //P2 loses
                 objToP2.writeObject(msg);
                 objToP2.flush();
@@ -114,15 +122,18 @@ public class GameThread implements Runnable
             else
             {
                 //P1 loses, P2 wins
+                System.out.printf("Game #%d: Delivering loss message to Player 1%n", gameNum);
                 msg = new Message(5, null, null, null, 1); //P1 loses
                 objToP1.writeObject(msg);
                 objToP1.flush();
+                System.out.printf("Game #%d: Delivering win message to Player 2%n", gameNum);
                 msg = new Message(6, null, null, null, 2); //P2 wins
                 objToP2.writeObject(msg);
                 objToP2.flush();
-                }
+            }
 
             //close GameThread and streams/Sockets
+            System.out.printf("Game #%d: Closing game thread%n", gameNum);
             outToP1.close();
             outToP2.close();
             objToP1.close();
