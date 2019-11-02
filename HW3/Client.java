@@ -97,7 +97,10 @@ public class Client
                     outToServer.flush();
                     break;
                 case Message.MSG_REQUEST_PLAY: //get boards and send block to bomb
+                    //print Pboard, Fboard
+                    System.out.println("Opponent's field:");
                     System.out.println(PTable.toString());
+                    System.out.println("My field:");
                     System.out.println(FTable.toString());
                     System.out.printf("Player %d, fire a bomb (ex. 'G0'): ", playerNum);
                     //get bomb from player
@@ -106,7 +109,7 @@ public class Client
                     blockBomb[0] = (int)input.charAt(0) - (int)'A';
                     blockBomb[1] = Integer.parseInt(input.substring(1));
                     //send bomb to server
-                    msg = new Message(Message.MSG_RESPONSE_PLAY, FTable, PTable, blockBomb, playerNum);
+                    msg = new Message(Message.MSG_RESPONSE_PLAY, null, null, blockBomb, playerNum);
                     outToServer.writeObject(msg);
                     outToServer.flush();
                     break;

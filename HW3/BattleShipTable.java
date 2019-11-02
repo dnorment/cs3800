@@ -153,7 +153,7 @@ public class BattleShipTable implements Serializable
 		{
 			for (int j=0; j<10; j++)
 			{
-				String symbol = table[i][j];
+				String symbol = this.table[i][j];
 				if (symbol.equals(BattleShipTable.AIRCRAFT_CARRIER_SYMBOL) || symbol.equals(BattleShipTable.DESTROYER_SYMBOL) || symbol.equals(BattleShipTable.SUBMARINE_SYMBOL))
 				{
 					return true;
@@ -163,16 +163,27 @@ public class BattleShipTable implements Serializable
 		return false;
 	}
 
+	public void hit(int[] blockBomb)
+	{
+		this.table[blockBomb[0]][blockBomb[1]] = BattleShipTable.HIT_SYMBOL;
+	}
+
+	public void miss(int[] blockBomb)
+	{
+		this.table[blockBomb[0]][blockBomb[1]] = BattleShipTable.MISS_SYMBOL;
+	}
+
 	public boolean bomb(int[] blockBomb)
 	{
-		String symbol = table[blockBomb[0]][blockBomb[1]];
+		String symbol = this.table[blockBomb[0]][blockBomb[1]];
 		if (symbol.equals(BattleShipTable.AIRCRAFT_CARRIER_SYMBOL) || symbol.equals(BattleShipTable.DESTROYER_SYMBOL) || symbol.equals(BattleShipTable.SUBMARINE_SYMBOL))
 		{
-			table[blockBomb[0]][blockBomb[1]] = BattleShipTable.MISS_SYMBOL;
+			this.hit(blockBomb);
 			return true;
 		}
 		else
 		{
+			this.miss(blockBomb);
 			return false;
 		}
 	}

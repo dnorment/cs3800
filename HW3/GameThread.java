@@ -32,8 +32,8 @@ public class GameThread implements Runnable
             
             //send MSG_REQUEST_INIT to players to initialize boards
             System.out.printf("Game #%d: Initializing boards%n", gameNum);
-            Message init1 = new Message(1, P1FBoard, null, null, 1);
-            Message init2 = new Message(1, P2FBoard, null, null, 2);
+            Message init1 = new Message(Message.MSG_REQUEST_INIT, P1FBoard, null, null, 1);
+            Message init2 = new Message(Message.MSG_REQUEST_INIT, P2FBoard, null, null, 2);
             objToP1.writeObject(init1);
             objToP1.flush();
             objToP2.writeObject(init2);
@@ -56,7 +56,7 @@ public class GameThread implements Runnable
             {
                 //request play from P1
                 System.out.printf("Game #%d: Requesting play from Player 1%n", gameNum);
-                msg = new Message(Message.MSG_REQUEST_PLAY, P1FBoard, P1PBoard, null, 1); //MSG_REQUEST_PLAY
+                msg = new Message(Message.MSG_REQUEST_PLAY, P1FBoard, P1PBoard, null, 1);
                 objToP1.writeObject(msg);
                 objToP1.flush();
                 //parse play from P1
