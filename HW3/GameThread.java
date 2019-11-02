@@ -56,7 +56,7 @@ public class GameThread implements Runnable
             {
                 //request play from P1
                 System.out.printf("Game #%d: Requesting play from Player 1%n", gameNum);
-                msg = new Message(3, P1FBoard, P1PBoard, null, 1); //MSG_REQUEST_PLAY
+                msg = new Message(Message.MSG_REQUEST_PLAY, P1FBoard, P1PBoard, null, 1); //MSG_REQUEST_PLAY
                 objToP1.writeObject(msg);
                 objToP1.flush();
                 //parse play from P1
@@ -74,7 +74,7 @@ public class GameThread implements Runnable
                 P1PBoard.table[bomb[0]][bomb[1]] = hit ? BattleShipTable.HIT_SYMBOL : BattleShipTable.MISS_SYMBOL;
                 //return to player if bomb hit, if ship sunk
                 System.out.printf("Game #%d: Delivering hit success to Player 1%n", gameNum);
-                msg = new Message(hit ? 8 : 7, null, null, null, 1);
+                msg = new Message(hit ? Message.MSG_REQUEST_BOMB_HIT : Message.MSG_REQUEST_BOMB_MISS, null, null, null, 1);
                 objToP1.writeObject(msg);
                 objToP1.flush();
                 //if player 2 not dead from player 1's play
@@ -82,7 +82,7 @@ public class GameThread implements Runnable
                 {
                     //request play from P2
                     System.out.printf("Game #%d: Requesting play from Player 2%n", gameNum);
-                    msg = new Message(3, P2FBoard, P2PBoard, null, 2); //MSG_REQUEST_PLAY
+                    msg = new Message(Message.MSG_REQUEST_PLAY, P2FBoard, P2PBoard, null, 2); //MSG_REQUEST_PLAY
                     objToP2.writeObject(msg);
                     objToP2.flush();
                     //parse play from P2
@@ -100,7 +100,7 @@ public class GameThread implements Runnable
                     P2PBoard.table[bomb[0]][bomb[1]] = hit ? BattleShipTable.HIT_SYMBOL : BattleShipTable.MISS_SYMBOL;
                     //return to play if bomb him, if ship sunk
                     System.out.printf("Game #%d: Delivering hit success to Player 2%n", gameNum);
-                    msg = new Message(hit ? 8 : 9, null, null, null, 2);
+                    msg = new Message(hit ? Message.MSG_REQUEST_BOMB_HIT : Message.MSG_REQUEST_BOMB_MISS, null, null, null, 2);
                     objToP2.writeObject(msg);
                     objToP2.flush();
                 }
@@ -111,11 +111,11 @@ public class GameThread implements Runnable
             {
                 //P1 wins, P2 loses
                 System.out.printf("Game #%d: Delivering win message to Player 1%n", gameNum);
-                msg = new Message(6, null, null, null, 1); //P1 wins
+                msg = new Message(Message.MSG_REQUEST_GAME_WIN, null, null, null, 1); //P1 wins
                 objToP1.writeObject(msg);
                 objToP1.flush();
                 System.out.printf("Game #%d: Delivering loss message to Player 2%n", gameNum);
-                msg = new Message(5, null, null, null, 2); //P2 loses
+                msg = new Message(Message.MSG_REQUEST_GAME_OVER, null, null, null, 2); //P2 loses
                 objToP2.writeObject(msg);
                 objToP2.flush();
             }
@@ -123,11 +123,11 @@ public class GameThread implements Runnable
             {
                 //P1 loses, P2 wins
                 System.out.printf("Game #%d: Delivering loss message to Player 1%n", gameNum);
-                msg = new Message(5, null, null, null, 1); //P1 loses
+                msg = new Message(Message.MSG_REQUEST_GAME_OVER, null, null, null, 1); //P1 loses
                 objToP1.writeObject(msg);
                 objToP1.flush();
                 System.out.printf("Game #%d: Delivering win message to Player 2%n", gameNum);
-                msg = new Message(6, null, null, null, 2); //P2 wins
+                msg = new Message(Message.MSG_REQUEST_GAME_WIN, null, null, null, 2); //P2 wins
                 objToP2.writeObject(msg);
                 objToP2.flush();
             }

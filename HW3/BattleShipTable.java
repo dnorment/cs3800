@@ -3,23 +3,13 @@ import java.io.Serializable;
 public class BattleShipTable implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	/* Constants*/
-	//Size of each type of ship
+
+	//size of each type of ship
 	static final int AIRCRAFT_CARRIER_SIZE = 5;
 	static final int DESTROYER_SIZE = 3;
 	static final int SUBMARINE_SIZE = 1;
 
 	//symbols used on the board
-	/*
-	   "A": Aircraft
-	   "D": Destroyer
-	   "S": Submarine
-
-	   "X": Hit
-	   "O": Miss
-	   "Z": default value
-	*/
-
 	static final String AIRCRAFT_CARRIER_SYMBOL = "A";
 	static final String DESTROYER_SYMBOL = "D";
 	static final String SUBMARINE_SYMBOL = "S";
