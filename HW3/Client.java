@@ -93,6 +93,7 @@ public class Client
 
                     //send board to server
                     msg = new Message(Message.MSG_RESPONSE_INIT, FTable, null, null, playerNum);
+                    outToServer.reset();
                     outToServer.writeObject(msg);
                     outToServer.flush();
                     break;
@@ -110,6 +111,7 @@ public class Client
                     blockBomb[1] = Integer.parseInt(input.substring(1));
                     //send bomb to server
                     msg = new Message(Message.MSG_RESPONSE_PLAY, null, null, blockBomb, playerNum);
+                    outToServer.reset();
                     outToServer.writeObject(msg);
                     outToServer.flush();
                     break;
